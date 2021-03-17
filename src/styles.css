@@ -1,0 +1,35 @@
+#app {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 24px;
+}
+
+#app > div {
+  display: flex;
+}
+
+[data-container],
+[data-container] div {
+  padding: 8px;
+  margin: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  outline: 1px solid green;
+}
+
+[data-featured-other] {
+  background-color: lightblue;
+}
+
+[data-featured-last] {
+  background-color: lightgreen;
+}
+
+[data-featured-penultimate] {
+  background-color: yellow;
+}
