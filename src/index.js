@@ -1,72 +1,47 @@
 import "./styles.css";
 import data from "./data.js";
 
-const container = document.querySelector(".container");
+let lastArr = [];
+let otherArr = [];
+let penulArr = [];
 
-const createSortArr = (arr) => {
-  const lastArr = [],
-    otherArr = [],
-    penultimateArr = [];
+data.map((el) => {
+  if (el.feature === "last") {
+    el.data = "featuredLast";
+    lastArr.push(el);
+  } else if (el.feature === "other") {
+    el.data = "featuredOther";
+    otherArr.push(el);
+  } else {
+    el.data = "featuredPenultimate";
+    penulArr.push(el);
+  }
+});
 
-  const sortArr = (arr) => {
-    return arr.sort((a, b) => (a["id"] > b["id"] ? -1 : 1));
-  };
-
-  arr.forEach((el) => {
-    if (el.feature === "last") {
-      el.data = "data-featured-last";
-      lastArr.push(el);
-    } else if (el.feature === "other") {
-      el.data = "data-featured-other";
-      otherArr.push(el);
-    } else {
-      el.data = "data-featured-penultimate";
-      penultimateArr.push(el);
-    }
-  });
-  sortArr(lastArr);
-  sortArr(otherArr);
-  sortArr(penultimateArr);
-
-  const resArr = [...otherArr, ...penultimateArr, ...lastArr];
-
-  return resArr;
+let byId = () => {
+  return (a, b) => (a["id"] > b["id"] ? -1 : 1);
 };
 
-const drawItems = (items) => {
-  let reducedItems = items.reduce((html, item) => {
-    html += `<div id="${item.id}" ${item.data}>${item.id} ${item.feature}</div>`;
-    return html;
-  }, '');
-
-  container.insertAdjacentHTML('beforeend', reducedItems)
+let sortArr = (arr) => {
+  return arr.sort(byId());
 };
+sortArr(lastArr);
+sortArr(otherArr);
+sortArr(penulArr);
 
-drawItems(createSortArr(data));
+const resArr = otherArr.concat(penulArr, lastArr);
 
-// не совсем помню задание нужно ли создавать
-//всю обертку с дивами или
-//нужно просто вывести отсортрованный список
+const app = document.querySelector("#app");
+const newContainer = document.createElement("div");
+newContainer.classList.add("container");
+newContainer.dataset.container = "";
 
-/**
- * нужно в container заспредить отсортированные дивы
- *
- * сам контейнер не нужно создавать, в принципе,
- * ты уже сделал всё
- */
+resArr.forEach((el) => {
+  let div = document.createElement("div");
+  div.innerHTML = `${el.id} ${el.feature}`;
+  div.id = el.id;
+  div.dataset[el.data] = "";
+  newContainer.insertAdjacentElement("beforeend", div);
+});
 
-//понял, спасибо вам за уделенное время :)
-
-/**
- * попробуй теперь причесать:
- * - выделить функции нужные
- * - через редьюс преобразование данных сделать
- */
-
-// понял, хорошо
-
-/**
- * в 17 вернёмся глянем окончательный вариант
- */
-
-// Причесал, выделил нужные функции. Reduce, на сколько понял где уместен, применил
+app.insertAdjacentElement("beforeend", newContainer);
