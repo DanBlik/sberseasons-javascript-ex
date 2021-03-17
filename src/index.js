@@ -1,47 +1,45 @@
 import "./styles.css";
 import data from "./data.js";
 
-let lastArr = [];
-let otherArr = [];
-let penulArr = [];
+const container = document.querySelector(".container");
 
-data.map((el) => {
-  if (el.feature === "last") {
-    el.data = "featuredLast";
-    lastArr.push(el);
-  } else if (el.feature === "other") {
-    el.data = "featuredOther";
-    otherArr.push(el);
-  } else {
-    el.data = "featuredPenultimate";
-    penulArr.push(el);
-  }
-});
+const createSortArr = (arr) => {
+  const lastArr = [],
+      otherArr = [],
+      penultimateArr = [];
 
-let byId = () => {
-  return (a, b) => (a["id"] > b["id"] ? -1 : 1);
+  const sortArr = (arr) => {
+    return arr.sort((a, b) => (a["id"] > b["id"] ? -1 : 1));
+  };
+
+  arr.forEach((el) => {
+    if (el.feature === "last") {
+      el.data = "data-featured-last";
+      lastArr.push(el);
+    } else if (el.feature === "other") {
+      el.data = "data-featured-other";
+      otherArr.push(el);
+    } else {
+      el.data = "data-featured-penultimate";
+      penultimateArr.push(el);
+    }
+  });
+  sortArr(lastArr);
+  sortArr(otherArr);
+  sortArr(penultimateArr);
+
+  const resArr = [...otherArr, ...penultimateArr, ...lastArr];
+
+  return resArr;
 };
 
-let sortArr = (arr) => {
-  return arr.sort(byId());
+const drawItems = (items) => {
+  let reducedItems = items.reduce((html, item) => {
+    html += `<div id="${item.id}" ${item.data}>${item.id} ${item.feature}</div>`;
+    return html;
+  }, '');
+
+  container.insertAdjacentHTML('beforeend', reducedItems)
 };
-sortArr(lastArr);
-sortArr(otherArr);
-sortArr(penulArr);
 
-const resArr = otherArr.concat(penulArr, lastArr);
-
-const app = document.querySelector("#app");
-const newContainer = document.createElement("div");
-newContainer.classList.add("container");
-newContainer.dataset.container = "";
-
-resArr.forEach((el) => {
-  let div = document.createElement("div");
-  div.innerHTML = `${el.id} ${el.feature}`;
-  div.id = el.id;
-  div.dataset[el.data] = "";
-  newContainer.insertAdjacentElement("beforeend", div);
-});
-
-app.insertAdjacentElement("beforeend", newContainer);
+drawItems(createSortArr(data));
