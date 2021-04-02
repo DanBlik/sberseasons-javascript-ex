@@ -1,45 +1,34 @@
-import "./styles.css";
-import data from "./data.js";
+import "./styles.css"
+import data from "./data.js"
 
-const container = document.querySelector(".container");
+let dataCopySortedById = data.slice().sort((a,b) => b["id"] - a["id"])
 
-const createSortArr = (arr) => {
-  const lastArr = [],
-      otherArr = [],
-      penultimateArr = [];
+const result = dataCopySortedById.reduce((sortedArrData, dataElement) => {
+  if (dataElement.feature === "last") {
+    dataElement.data = "featuredLast"
+    sortedArrData[2].push(dataElement)
+  }
+  else if (dataElement.feature === "other") {
+    dataElement.data = "featuredOther"
+    sortedArrData[0].push(dataElement)
+  }
+  else {
+    dataElement.data = "featuredPenultimate"
+    sortedArrData[1].push(dataElement)
+  }
+  return sortedArrData
+}, [[],[],[]]).flat()
 
-  const sortArr = (arr) => {
-    return arr.sort((a, b) => (a["id"] > b["id"] ? -1 : 1));
-  };
+const container = document.querySelector(".container")
 
-  arr.forEach((el) => {
-    if (el.feature === "last") {
-      el.data = "data-featured-last";
-      lastArr.push(el);
-    } else if (el.feature === "other") {
-      el.data = "data-featured-other";
-      otherArr.push(el);
-    } else {
-      el.data = "data-featured-penultimate";
-      penultimateArr.push(el);
-    }
-  });
-  sortArr(lastArr);
-  sortArr(otherArr);
-  sortArr(penultimateArr);
+const appendItems = (items) => {
+  let nodes = items.map(item => {
+    const nodeItem = document.createElement("div")
+    nodeItem.dataset[item.data] = item.data
+    nodeItem.textContent = `${item.id} ${item.feature}`
+    return nodeItem
+  })
+  container.replaceChildren(...nodes)
+}
 
-  const resArr = [...otherArr, ...penultimateArr, ...lastArr];
-
-  return resArr;
-};
-
-const drawItems = (items) => {
-  let reducedItems = items.reduce((html, item) => {
-    html += `<div id="${item.id}" ${item.data}>${item.id} ${item.feature}</div>`;
-    return html;
-  }, '');
-
-  container.insertAdjacentHTML('beforeend', reducedItems)
-};
-
-drawItems(createSortArr(data));
+appendItems(result)
