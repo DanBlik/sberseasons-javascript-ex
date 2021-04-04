@@ -1,29 +1,29 @@
 import "./styles.css"
 import data from "./data.js"
 
-const createDiv = (params) => {
-  const nodeItem = document.createElement("div")
-  nodeItem.textContent = `${params.id} ${params.feature}`
-  return nodeItem
-}
 const container = document.querySelector(".container")
 
-let dataCopySortedById = JSON.parse(JSON.stringify(data)).sort((a,b) => b["id"] - a["id"])
+const createDiv = (dataItem, dataAttrValue, id) => {
+  const div = document.createElement("div")
+  div.insertAdjacentHTML("beforeend", `${dataItem.id} ${dataItem.feature}`)
+  div.setAttribute(dataAttrValue, "")
+  div.setAttribute("id", id)
+  return div
+}
 
-const result = dataCopySortedById.reduce((acc, currentDataElement) => {
-  let element = createDiv(currentDataElement)
+const result = data.reduce((acc, currentDataElement) => {
+  const [others, penultimates, lasts] = acc
+  acc.map(itemsList => itemsList.sort((a,b) => b["id"] - a["id"]))
+
   switch (currentDataElement.feature) {
     case "last":
-      element.setAttribute("data-featured-last", "")
-      acc[2].push(element)
+      lasts.push(createDiv(currentDataElement, "data-featured-last",currentDataElement.id))
       break
     case "other":
-      element.setAttribute("data-featured-other", "")
-      acc[0].push(element)
+      others.push(createDiv(currentDataElement, "data-featured-other",currentDataElement.id))
       break
     case "penultimate":
-      element.setAttribute("data-featured-penultimate", "")
-      acc[1].push(element)
+      penultimates.push(createDiv(currentDataElement, "data-featured-penultimate",currentDataElement.id))
       break
   }
   
