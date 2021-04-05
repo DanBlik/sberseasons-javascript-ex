@@ -1,10 +1,10 @@
 import "./styles.css"
 import data from "./data.js"
 
-const createDiv = (dataItem, dataAttrValue) => {
+const createDiv = (dataItem) => {
   const div = document.createElement("div")
   div.insertAdjacentHTML("beforeend", `${dataItem.id} ${dataItem.feature}`)
-  div.setAttribute(dataAttrValue, "")
+  div.setAttribute(`data-featured-${dataItem.feature}`, "")
   div.setAttribute("id", dataItem.id)
   return div
 }
@@ -14,14 +14,13 @@ const sortedData = data.reduce((acc, currentDataElement) => {
 
   switch (currentDataElement.feature) {
     case "last":
-      lasts.push(createDiv(currentDataElement, "data-featured-last"))
+      lasts.push(createDiv(currentDataElement))
       break
     case "penultimate":
-      penultimates.push(createDiv(currentDataElement, "data-featured-penultimate"))
+      penultimates.push(createDiv(currentDataElement))
       break
     default:
-      others.push(createDiv(currentDataElement, "data-featured-other"))
-      break
+      others.push(createDiv(currentDataElement))
   }
   
   return acc
