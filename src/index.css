@@ -1,4 +1,7 @@
-#app {
+.App {
+  font-family: sans-serif;
+  text-align: center;
+
   display: flex;
   flex-flow: column;
   justify-content: center;
@@ -7,7 +10,7 @@
   font-size: 24px;
 }
 
-#app > div {
+.App > div {
   display: flex;
 }
 
