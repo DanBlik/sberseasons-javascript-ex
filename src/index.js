@@ -1,47 +1,31 @@
-import "./styles.css";
-import data from "./data.js";
+import "./styles.css"
+import data from "./data.js"
 
-let lastArr = [];
-let otherArr = [];
-let penulArr = [];
+const createDiv = (dataItem) => {
+  const div = document.createElement("div")
+  div.insertAdjacentHTML("beforeend", `${dataItem.id} ${dataItem.feature}`)
+  div.setAttribute(`data-featured-${dataItem.feature}`, "")
+  div.setAttribute("id", dataItem.id)
+  return div
+}
 
-data.map((el) => {
-  if (el.feature === "last") {
-    el.data = "featuredLast";
-    lastArr.push(el);
-  } else if (el.feature === "other") {
-    el.data = "featuredOther";
-    otherArr.push(el);
-  } else {
-    el.data = "featuredPenultimate";
-    penulArr.push(el);
+const sortedData = data.reduce((acc, currentDataElement) => {
+  const [others, penultimates, lasts] = acc
+
+  switch (currentDataElement.feature) {
+    case "last":
+      lasts.push(createDiv(currentDataElement))
+      break
+    case "penultimate":
+      penultimates.push(createDiv(currentDataElement))
+      break
+    default:
+      others.push(createDiv(currentDataElement))
   }
-});
+  
+  return acc
+}, [[],[],[]])
+    .map(el => el.sort((a,b) => b["id"] - a["id"]))
+    .flat()
 
-let byId = () => {
-  return (a, b) => (a["id"] > b["id"] ? -1 : 1);
-};
-
-let sortArr = (arr) => {
-  return arr.sort(byId());
-};
-sortArr(lastArr);
-sortArr(otherArr);
-sortArr(penulArr);
-
-const resArr = otherArr.concat(penulArr, lastArr);
-
-const app = document.querySelector("#app");
-const newContainer = document.createElement("div");
-newContainer.classList.add("container");
-newContainer.dataset.container = "";
-
-resArr.forEach((el) => {
-  let div = document.createElement("div");
-  div.innerHTML = `${el.id} ${el.feature}`;
-  div.id = el.id;
-  div.dataset[el.data] = "";
-  newContainer.insertAdjacentElement("beforeend", div);
-});
-
-app.insertAdjacentElement("beforeend", newContainer);
+document.querySelector(".container").replaceChildren(...sortedData)
