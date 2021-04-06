@@ -1,10 +1,9 @@
-import React, {useState} from 'react'
+import React from 'react'
 
 const Card = ({id, feature, dataAttribute}) => {
-    const [dataAttr] = useState({[dataAttribute]: ""})
 
     return (
-        <div {...dataAttr}>
+        <div {...dataAttribute}>
             {id + " " + feature}
         </div>
     )

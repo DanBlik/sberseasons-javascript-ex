@@ -5,28 +5,27 @@ import data from '../data'
 const ItemsList = () => {
     const sortedData = data.reduce((acc, currentDataElement) => {
         const [others, penultimates, lasts] = acc
-        let {id, feature} = currentDataElement
-      
+        const {id, feature} = currentDataElement
+
         switch (currentDataElement.feature) {
           case "last":
-            lasts.push(<Card key={id} id={id} feature={feature} dataAttribute={`data-featured-${feature}`}/>)
+            lasts.push({id, feature, dataAttribute: `data-featured-${feature}`})
             break
           case "penultimate":
-            penultimates.push(<Card key={id} id={id} feature={feature} dataAttribute={`data-featured-${feature}`}/>)
+            penultimates.push({id, feature, dataAttribute: `data-featured-${feature}`})
             break
           default:
-            others.push(<Card key={id} id={id} feature={feature} dataAttribute={`data-featured-${feature}`}/>)
+            others.push({id, feature, dataAttribute: `data-featured-${feature}`})
         }
         
         return acc
       }, [[],[],[]])
-          .map(el => el.sort((a,b) => b.props.id - a.props.id))
-          .flat()
+          .map(el => el.sort((a,b) => b["id"] - a["id"])).flat()
 
     return (
         <div data-container>
             {
-                sortedData
+                sortedData.map(({id, feature, dataAttribute}) => <Card key={id} id={id} feature={feature} dataAttribute={{[dataAttribute]: ""}}/>)
             }
         </div>
     )
