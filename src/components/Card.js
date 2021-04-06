@@ -1,10 +1,10 @@
 import React, {useState} from 'react'
 
-const Card = ({id, feature}) => {
-    const [dataAttr, setDataAttr] = useState(null)
+const Card = ({id, feature, dataAttribute}) => {
+    const [dataAttr] = useState({[dataAttribute]: ""})
 
     return (
-        <div>
+        <div {...dataAttr}>
             {id + " " + feature}
         </div>
     )
