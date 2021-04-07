@@ -1,14 +1,16 @@
 import React from 'react'
 
-const ItemsList = ({sortedData}) => {
+const ItemsList = ({data}) => {
     return (
         <div data-container>
             {
-                sortedData.map(({id, feature}) => {
-                    return (
-                        <div key={id} id={id} feature={feature} {...{[`data-featured-${feature}`]: ""}}>{id + " " + feature}</div>
-                    )
-                })
+                data.map(({id, feature}) => <div 
+                            key={id}
+                            id={id}
+                            {...{[`data-featured-${feature}`]: ""}}>
+                                {`${id} ${feature}`}
+                            </div>   
+                )
             }
         </div>
     )

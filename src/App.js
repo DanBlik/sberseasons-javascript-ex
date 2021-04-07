@@ -4,17 +4,16 @@ import data from './data'
 function App() {
   const sortedData = data.reduce((acc, currentDataElement) => {
     const [others, penultimates, lasts] = acc
-    const {id, feature} = currentDataElement
 
     switch (currentDataElement.feature) {
       case "last":
-        lasts.push({id, feature})
+        lasts.push(currentDataElement)
         break
       case "penultimate":
-        penultimates.push({id, feature})
+        penultimates.push(currentDataElement)
         break
       default:
-        others.push({id, feature})
+        others.push(currentDataElement)
     }
     
     return acc
@@ -23,7 +22,7 @@ function App() {
 
   return (
     <div className="App">
-      <ItemsList sortedData={sortedData}/>
+      <ItemsList data={sortedData}/>
     </div>
   );
 }
