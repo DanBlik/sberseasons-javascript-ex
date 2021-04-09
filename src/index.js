@@ -2,8 +2,8 @@ import "./styles.css";
 import cube from "./data";
 import result from "./result";
 
-console.log({ cube });
-console.log({ result });
+console.log(cube);
+console.log(result);
 
 const res = cube
 .map(row => ({
@@ -47,12 +47,28 @@ const res = cube
                                 key: current.parentKey,
                                 title: current.parentSummary,
                                 type: current.parentType,
-                                qty: null
+                                qty: current.childQty
                              }, 
-                             children: {} 
+                             children: [],
                         })
                     }
+
+                    squad.issues.forEach(issue => {
+                        if (!squad.issues.some(issue => issue["children"].key === current.childKey)) {
+                            issue.children.push({
+                                data: {
+                                    key: current.childKey,
+                                    title: current.childSummary,
+                                    type: current.childType
+                                 }
+                            })
+                        }
+                    })
+
+
                 }
+
+                
             })
         }
     })

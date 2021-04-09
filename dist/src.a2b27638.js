@@ -5984,12 +5984,8 @@ var _result = _interopRequireDefault(require("./result"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-console.log({
-  cube: _data.default
-});
-console.log({
-  result: _result.default
-});
+console.log(_data.default);
+console.log(_result.default);
 
 var res = _data.default.map(function (row) {
   return {
@@ -6039,11 +6035,25 @@ var res = _data.default.map(function (row) {
                 key: current.parentKey,
                 title: current.parentSummary,
                 type: current.parentType,
-                qty: null
+                qty: current.childQty
               },
-              children: {}
+              children: []
             });
           }
+
+          squad.issues.forEach(function (issue) {
+            if (!squad.issues.some(function (issue) {
+              return issue["children"].key === current.childKey;
+            })) {
+              issue.children.push({
+                data: {
+                  key: current.childKey,
+                  title: current.childSummary,
+                  type: current.childType
+                }
+              });
+            }
+          });
         }
       });
     }
@@ -6108,7 +6118,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49358" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64957" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
