@@ -1,6 +1,7 @@
 import "./styles.css";
 import cube from "./data";
 import result from "./result";
+const assert = require('assert');
 
 console.log(cube);
 console.log(result);
@@ -32,7 +33,7 @@ const res = cube
                 isNew: current.isNew,
                 isRun: current.isRun,
                 bound: "15% (mocked)",
-                parentOwner: current.productOwner,
+                productOwner: current.productOwner,
                 tagged: false,
                 issues: [{
                     data: {
@@ -61,7 +62,7 @@ const res = cube
             isNew: current.isNew,
             isRun: current.isRun,
             bound: "15% (mocked)",
-            parentOwner: current.productOwner,
+            productOwner: current.productOwner,
             tagged: false,
             issues: [{
                 data: {
@@ -170,6 +171,8 @@ const res = cube
     return acc
 }, [])
 console.log(res);
+
+console.log(assert.deepStrictEqual(10, result))
 
 
 
