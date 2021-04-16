@@ -6014,6 +6014,9 @@ var res = _data.default.map(function (row) {
         title: current.squad,
         isNew: current.isNew,
         isRun: current.isRun,
+        bound: "15% (mocked)",
+        parentOwner: current.productOwner,
+        tagged: false,
         issues: [{
           data: {
             key: current.parentKey,
@@ -6025,7 +6028,8 @@ var res = _data.default.map(function (row) {
             data: {
               key: current.childKey,
               title: current.childSummary,
-              type: current.childType
+              type: current.childType,
+              qty: 1
             }
           }]
         }]
@@ -6042,6 +6046,9 @@ var res = _data.default.map(function (row) {
       title: current.squad,
       isNew: current.isNew,
       isRun: current.isRun,
+      bound: "15% (mocked)",
+      parentOwner: current.productOwner,
+      tagged: false,
       issues: [{
         data: {
           key: current.parentKey,
@@ -6053,7 +6060,8 @@ var res = _data.default.map(function (row) {
           data: {
             key: current.childKey,
             title: current.childSummary,
-            type: current.childType
+            type: current.childType,
+            qty: 1
           }
         }]
       }]
@@ -6076,7 +6084,8 @@ var res = _data.default.map(function (row) {
         data: {
           key: current.childKey,
           title: current.childSummary,
-          type: current.childType
+          type: current.childType,
+          qty: 1
         }
       }]
     });
@@ -6086,7 +6095,8 @@ var res = _data.default.map(function (row) {
     data: {
       key: current.childKey,
       title: current.childSummary,
-      type: current.childType
+      type: current.childType,
+      qty: 1
     }
   }); // let issue = squad.issues.find(issue => issue.data.key === current.parentKey)
   // if (!issue) {

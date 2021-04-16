@@ -31,6 +31,9 @@ const res = cube
                 title: current.squad,
                 isNew: current.isNew,
                 isRun: current.isRun,
+                bound: "15% (mocked)",
+                parentOwner: current.productOwner,
+                tagged: false,
                 issues: [{
                     data: {
                       key: current.parentKey,
@@ -43,6 +46,7 @@ const res = cube
                           key: current.childKey,
                           title: current.childSummary,
                           type: current.childType,
+                          qty: 1
                         },
                       }]
                   }]
@@ -56,6 +60,9 @@ const res = cube
             title: current.squad,
             isNew: current.isNew,
             isRun: current.isRun,
+            bound: "15% (mocked)",
+            parentOwner: current.productOwner,
+            tagged: false,
             issues: [{
                 data: {
                   key: current.parentKey,
@@ -68,6 +75,7 @@ const res = cube
                       key: current.childKey,
                       title: current.childSummary,
                       type: current.childType,
+                      qty: 1
                     },
                   }]
               }]
@@ -88,6 +96,7 @@ const res = cube
                   key: current.childKey,
                   title: current.childSummary,
                   type: current.childType,
+                  qty: 1
                 },
               }]
           })
@@ -98,6 +107,7 @@ const res = cube
             key: current.childKey,
             title: current.childSummary,
             type: current.childType,
+            qty: 1
           },
         })
   
