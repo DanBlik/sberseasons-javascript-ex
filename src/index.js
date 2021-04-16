@@ -1,13 +1,14 @@
 import "./styles.css";
 import cube from "./data";
 import result from "./result";
-const assert = require('assert');
+
+import testCheckRes from "./testCheckRes";
 
 console.log(cube);
 console.log(result);
 
 const res = cube
-.map(row => ({
+  .map((row) => ({
     cluster: row[0].qText,
     squad: row[1].qText,
     productOwner: row[2].qText,
@@ -19,191 +20,115 @@ const res = cube
     childType: row[8].qText,
     childQty: row[9].qNum,
     isRun: Boolean(row[10].qNum),
-    isNew: Boolean(row[11].qNum)
-}))
-.reduce((acc, current) => {
-
-    let cluster = acc.find(cluster => cluster.title === current.cluster)
-    if (!cluster) { 
-        
-        acc.push({
-            title: current.cluster,
-            squads: [{
-                title: current.squad,
-                isNew: current.isNew,
-                isRun: current.isRun,
-                bound: "15% (mocked)",
-                productOwner: current.productOwner,
-                tagged: false,
-                issues: [{
-                    data: {
-                      key: current.parentKey,
-                      title: current.parentSummary,
-                      type: current.parentType,
-                      qty: current.childQty,
-                    },
-                    children: [{
-                        data: {
-                          key: current.childKey,
-                          title: current.childSummary,
-                          type: current.childType,
-                          qty: 1
-                        },
-                      }]
-                  }]
-            }]
-        })
-    }
-  
-    let squad = cluster?.squads.find(squad => squad.title === current.squad)
-    if (!squad) {
-        cluster?.squads.push({
+    isNew: Boolean(row[11].qNum),
+  }))
+  .reduce((acc, current) => {
+    const cluster = acc.find((cluster) => cluster.title === current.cluster);
+    if (!cluster) {
+      acc.push({
+        title: current.cluster,
+        squads: [
+          {
             title: current.squad,
             isNew: current.isNew,
             isRun: current.isRun,
             bound: "15% (mocked)",
             productOwner: current.productOwner,
             tagged: false,
-            issues: [{
+            issues: [
+              {
                 data: {
                   key: current.parentKey,
                   title: current.parentSummary,
                   type: current.parentType,
                   qty: current.childQty,
                 },
-                children: [{
+                children: [
+                  {
                     data: {
                       key: current.childKey,
                       title: current.childSummary,
                       type: current.childType,
-                      qty: 1
+                      qty: 1,
                     },
-                  }]
-              }]
-        })
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
     }
 
-    let issue = squad?.issues.find(issue => issue.data.key === current.parentKey)
-    if (!issue) {
-        squad?.issues.push({
+    const squad = cluster?.squads.find(
+      (squad) => squad.title === current.squad
+    );
+    if (!squad) {
+      cluster?.squads.push({
+        title: current.squad,
+        isNew: current.isNew,
+        isRun: current.isRun,
+        bound: "15% (mocked)",
+        productOwner: current.productOwner,
+        tagged: false,
+        issues: [
+          {
             data: {
               key: current.parentKey,
               title: current.parentSummary,
               type: current.parentType,
               qty: current.childQty,
             },
-            children: [{
+            children: [
+              {
                 data: {
                   key: current.childKey,
                   title: current.childSummary,
                   type: current.childType,
-                  qty: 1
+                  qty: 1,
                 },
-              }]
-          })
-        }
-        
-        issue?.children.push({
-          data: {
-            key: current.childKey,
-            title: current.childSummary,
-            type: current.childType,
-            qty: 1
+              },
+            ],
           },
-        })
-  
-    // let issue = squad.issues.find(issue => issue.data.key === current.parentKey)
-    // if (!issue) {
-    //     issue = {
-    //       data: {
-    //         key: current.parentKey,
-    //         title: current.parentSummary,
-    //         type: current.parentType,
-    //         qty: current.childQty,
-    //       },
-    //       children: []
-    //     };
-    //     squad.issues.push(issue)
-    // }
+        ],
+      });
+    }
 
-    //let children = issue.find(child => )
+    const issue = squad?.issues.find(
+      (issue) => issue.data.key === current.parentKey
+    );
+    if (!issue) {
+      squad?.issues.push({
+        data: {
+          key: current.parentKey,
+          title: current.parentSummary,
+          type: current.parentType,
+          qty: current.childQty,
+        },
+        children: [
+          {
+            data: {
+              key: current.childKey,
+              title: current.childSummary,
+              type: current.childType,
+              qty: 1,
+            },
+          },
+        ],
+      });
+    }
 
+    issue?.children.push({
+      data: {
+        key: current.childKey,
+        title: current.childSummary,
+        type: current.childType,
+        qty: 1,
+      },
+    });
 
-    // acc.forEach((cluster) => {
-    //     if (!cluster.squads.some(squad => squad.title === current.squad)) {
-    //             cluster.squads.push({
-    //                 title: current.squad,
-    //                 isNew: current.isNew,
-    //                 isRun: current.isRun,
-    //                 issues: []
-    //             })
-    //     }
-    // })
-
-    // cluster.squads.forEach(squad => {
-    //     if (!squad.issues.some(issue => issue["data"].key === current.parentKey)) {
-    //             squad.issues.push({
-    //                  data: {
-    //                     key: current.parentKey,
-    //                     title: current.parentSummary,
-    //                     type: current.parentType,
-    //                     qty: current.childQty
-    //                  }, 
-    //                  children: [],
-    //             })
-            
-    //     }             
-    // })
-
-    // squad.issues.forEach(issue => {
-    //     if (!squad.issues.some(issue => issue["children"].key === current.childKey)) {
-    //         issue.children.push({
-    //             data: {
-    //                 key: current.childKey,
-    //                 title: current.childSummary,
-    //                 type: current.childType
-    //              }
-    //         })
-    //     }
-    // })
-    
-    
-    return acc
-}, [])
+    return acc;
+  }, []);
 console.log(res);
 
-console.log(assert.deepStrictEqual(10, result))
-
-
-
-
-// const transformData = (data) => {
-//     return data.map(el => {
-//         return {
-//             title: el[0].qText,
-//             squads: {
-//                 title: el[1].qText,
-//                 productOwner: el[2].qText,
-//                 bound: "15% (mocked)",
-//                 isNew: Boolean(el[11].qNum),
-//                 isRun: Boolean(el[10].qNum),
-//                 issues: [{ // тут должен быть массив нескольких объектов
-//                     data: {
-//                         type: el[5].qText,
-//                         key: el[3].qText,
-//                         qty: el[9].qText,
-//                         title: el[4].qText
-//                     },
-//                     children: [{
-//                         key: el[6].qText,
-//                         qty: el[9].qText,
-//                         title: el[7].qText,
-//                         type: el[8].qText
-//                     }]
-//                 }]
-//             }
-//         }
-//     })
-// }
-
-// console.log(transformData(Data))
+testCheckRes(res, result)

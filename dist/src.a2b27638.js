@@ -7411,7 +7411,25 @@ var objectKeys = Object.keys || function (obj) {
   return keys;
 };
 
-},{"object-assign":"node_modules/object-assign/index.js","util/":"node_modules/assert/node_modules/util/util.js"}],"src/index.js":[function(require,module,exports) {
+},{"object-assign":"node_modules/object-assign/index.js","util/":"node_modules/assert/node_modules/util/util.js"}],"src/testCheckRes.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var assert = require('assert');
+
+var checkRes = function checkRes(src, dist) {
+  if (typeof assert.deepStrictEqual(src, dist) === "undefined") {
+    return console.log("Congrats! The data is equal.");
+  }
+};
+
+var _default = checkRes;
+exports.default = _default;
+},{"assert":"node_modules/assert/assert.js"}],"src/index.js":[function(require,module,exports) {
 "use strict";
 
 require("./styles.css");
@@ -7420,9 +7438,9 @@ var _data = _interopRequireDefault(require("./data"));
 
 var _result = _interopRequireDefault(require("./result"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _testCheckRes = _interopRequireDefault(require("./testCheckRes"));
 
-var assert = require('assert');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 console.log(_data.default);
 console.log(_result.default);
@@ -7538,89 +7556,13 @@ var res = _data.default.map(function (row) {
       type: current.childType,
       qty: 1
     }
-  }); // let issue = squad.issues.find(issue => issue.data.key === current.parentKey)
-  // if (!issue) {
-  //     issue = {
-  //       data: {
-  //         key: current.parentKey,
-  //         title: current.parentSummary,
-  //         type: current.parentType,
-  //         qty: current.childQty,
-  //       },
-  //       children: []
-  //     };
-  //     squad.issues.push(issue)
-  // }
-  //let children = issue.find(child => )
-  // acc.forEach((cluster) => {
-  //     if (!cluster.squads.some(squad => squad.title === current.squad)) {
-  //             cluster.squads.push({
-  //                 title: current.squad,
-  //                 isNew: current.isNew,
-  //                 isRun: current.isRun,
-  //                 issues: []
-  //             })
-  //     }
-  // })
-  // cluster.squads.forEach(squad => {
-  //     if (!squad.issues.some(issue => issue["data"].key === current.parentKey)) {
-  //             squad.issues.push({
-  //                  data: {
-  //                     key: current.parentKey,
-  //                     title: current.parentSummary,
-  //                     type: current.parentType,
-  //                     qty: current.childQty
-  //                  }, 
-  //                  children: [],
-  //             })
-  //     }             
-  // })
-  // squad.issues.forEach(issue => {
-  //     if (!squad.issues.some(issue => issue["children"].key === current.childKey)) {
-  //         issue.children.push({
-  //             data: {
-  //                 key: current.childKey,
-  //                 title: current.childSummary,
-  //                 type: current.childType
-  //              }
-  //         })
-  //     }
-  // })
-
+  });
   return acc;
 }, []);
 
 console.log(res);
-console.log(assert.deepStrictEqual(10, _result.default)); // const transformData = (data) => {
-//     return data.map(el => {
-//         return {
-//             title: el[0].qText,
-//             squads: {
-//                 title: el[1].qText,
-//                 productOwner: el[2].qText,
-//                 bound: "15% (mocked)",
-//                 isNew: Boolean(el[11].qNum),
-//                 isRun: Boolean(el[10].qNum),
-//                 issues: [{ // тут должен быть массив нескольких объектов
-//                     data: {
-//                         type: el[5].qText,
-//                         key: el[3].qText,
-//                         qty: el[9].qText,
-//                         title: el[4].qText
-//                     },
-//                     children: [{
-//                         key: el[6].qText,
-//                         qty: el[9].qText,
-//                         title: el[7].qText,
-//                         type: el[8].qText
-//                     }]
-//                 }]
-//             }
-//         }
-//     })
-// }
-// console.log(transformData(Data))
-},{"./styles.css":"src/styles.css","./data":"src/data.js","./result":"src/result.js","assert":"node_modules/assert/assert.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+(0, _testCheckRes.default)(res, _result.default);
+},{"./styles.css":"src/styles.css","./data":"src/data.js","./result":"src/result.js","./testCheckRes":"src/testCheckRes.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
