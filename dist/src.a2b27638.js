@@ -6002,62 +6002,141 @@ var res = _data.default.map(function (row) {
     isRun: Boolean(row[10].qNum),
     isNew: Boolean(row[11].qNum)
   };
-}).reduce(function (acc, current, idx) {
-  if (!acc.some(function (cluster) {
+}).reduce(function (acc, current) {
+  var cluster = acc.find(function (cluster) {
     return cluster.title === current.cluster;
-  })) {
+  });
+
+  if (!cluster) {
     acc.push({
       title: current.cluster,
-      squads: []
+      squads: [{
+        title: current.squad,
+        isNew: current.isNew,
+        isRun: current.isRun,
+        issues: [{
+          data: {
+            key: current.parentKey,
+            title: current.parentSummary,
+            type: current.parentType,
+            qty: current.childQty
+          },
+          children: [{
+            data: {
+              key: current.childKey,
+              title: current.childSummary,
+              type: current.childType
+            }
+          }]
+        }]
+      }]
     });
   }
 
-  acc.forEach(function (cluster) {
-    if (cluster.title === current.cluster) {
-      if (!cluster.squads.some(function (squad) {
-        return squad.title === current.squad;
-      })) {
-        cluster.squads.push({
-          title: current.squad,
-          isNew: current.isNew,
-          isRun: current.isRun,
-          issues: []
-        });
-      }
-
-      cluster.squads.forEach(function (squad) {
-        if (squad.title === current.squad) {
-          if (!squad.issues.some(function (issue) {
-            return issue["data"].key === current.parentKey;
-          })) {
-            squad.issues.push({
-              data: {
-                key: current.parentKey,
-                title: current.parentSummary,
-                type: current.parentType,
-                qty: current.childQty
-              },
-              children: []
-            });
-          }
-
-          squad.issues.forEach(function (issue) {
-            if (!squad.issues.some(function (issue) {
-              return issue["children"].key === current.childKey;
-            })) {
-              issue.children.push({
-                data: {
-                  key: current.childKey,
-                  title: current.childSummary,
-                  type: current.childType
-                }
-              });
-            }
-          });
-        }
-      });
-    }
+  var squad = cluster === null || cluster === void 0 ? void 0 : cluster.squads.find(function (squad) {
+    return squad.title === current.squad;
   });
+
+  if (!squad) {
+    cluster === null || cluster === void 0 ? void 0 : cluster.squads.push({
+      title: current.squad,
+      isNew: current.isNew,
+      isRun: current.isRun,
+      issues: [{
+        data: {
+          key: current.parentKey,
+          title: current.parentSummary,
+          type: current.parentType,
+          qty: current.childQty
+        },
+        children: [{
+          data: {
+            key: current.childKey,
+            title: current.childSummary,
+            type: current.childType
+          }
+        }]
+      }]
+    });
+  }
+
+  var issue = squad === null || squad === void 0 ? void 0 : squad.issues.find(function (issue) {
+    return issue.data.key === current.parentKey;
+  });
+
+  if (!issue) {
+    squad === null || squad === void 0 ? void 0 : squad.issues.push({
+      data: {
+        key: current.parentKey,
+        title: current.parentSummary,
+        type: current.parentType,
+        qty: current.childQty
+      },
+      children: [{
+        data: {
+          key: current.childKey,
+          title: current.childSummary,
+          type: current.childType
+        }
+      }]
+    });
+  }
+
+  issue === null || issue === void 0 ? void 0 : issue.children.push({
+    data: {
+      key: current.childKey,
+      title: current.childSummary,
+      type: current.childType
+    }
+  }); // let issue = squad.issues.find(issue => issue.data.key === current.parentKey)
+  // if (!issue) {
+  //     issue = {
+  //       data: {
+  //         key: current.parentKey,
+  //         title: current.parentSummary,
+  //         type: current.parentType,
+  //         qty: current.childQty,
+  //       },
+  //       children: []
+  //     };
+  //     squad.issues.push(issue)
+  // }
+  //let children = issue.find(child => )
+  // acc.forEach((cluster) => {
+  //     if (!cluster.squads.some(squad => squad.title === current.squad)) {
+  //             cluster.squads.push({
+  //                 title: current.squad,
+  //                 isNew: current.isNew,
+  //                 isRun: current.isRun,
+  //                 issues: []
+  //             })
+  //     }
+  // })
+  // cluster.squads.forEach(squad => {
+  //     if (!squad.issues.some(issue => issue["data"].key === current.parentKey)) {
+  //             squad.issues.push({
+  //                  data: {
+  //                     key: current.parentKey,
+  //                     title: current.parentSummary,
+  //                     type: current.parentType,
+  //                     qty: current.childQty
+  //                  }, 
+  //                  children: [],
+  //             })
+  //     }             
+  // })
+  // squad.issues.forEach(issue => {
+  //     if (!squad.issues.some(issue => issue["children"].key === current.childKey)) {
+  //         issue.children.push({
+  //             data: {
+  //                 key: current.childKey,
+  //                 title: current.childSummary,
+  //                 type: current.childType
+  //              }
+  //         })
+  //     }
+  // })
+
   return acc;
 }, []);
 
@@ -6118,7 +6197,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64957" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52018" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

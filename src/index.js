@@ -20,60 +20,142 @@ const res = cube
     isRun: Boolean(row[10].qNum),
     isNew: Boolean(row[11].qNum)
 }))
-.reduce((acc, current, idx) => {
-    if (!acc.some(cluster => cluster.title  === current.cluster)) {
+.reduce((acc, current) => {
+
+    let cluster = acc.find(cluster => cluster.title === current.cluster)
+    if (!cluster) { 
+        
         acc.push({
             title: current.cluster,
-            squads: [],
+            squads: [{
+                title: current.squad,
+                isNew: current.isNew,
+                isRun: current.isRun,
+                issues: [{
+                    data: {
+                      key: current.parentKey,
+                      title: current.parentSummary,
+                      type: current.parentType,
+                      qty: current.childQty,
+                    },
+                    children: [{
+                        data: {
+                          key: current.childKey,
+                          title: current.childSummary,
+                          type: current.childType,
+                        },
+                      }]
+                  }]
+            }]
         })
     }
-    
-    acc.forEach((cluster) => {
-        if (cluster.title === current.cluster) {
-            if (!cluster.squads.some(squad => squad.title === current.squad)) {
-                cluster.squads.push({
-                    title: current.squad,
-                    isNew: current.isNew,
-                    isRun: current.isRun,
-                    issues: []
-                })
-            }
+  
+    let squad = cluster?.squads.find(squad => squad.title === current.squad)
+    if (!squad) {
+        cluster?.squads.push({
+            title: current.squad,
+            isNew: current.isNew,
+            isRun: current.isRun,
+            issues: [{
+                data: {
+                  key: current.parentKey,
+                  title: current.parentSummary,
+                  type: current.parentType,
+                  qty: current.childQty,
+                },
+                children: [{
+                    data: {
+                      key: current.childKey,
+                      title: current.childSummary,
+                      type: current.childType,
+                    },
+                  }]
+              }]
+        })
+    }
 
-            cluster.squads.forEach(squad => {
-                if (squad.title === current.squad) {
-                    if (!squad.issues.some(issue => issue["data"].key === current.parentKey)) {
-                        squad.issues.push({
-                             data: {
-                                key: current.parentKey,
-                                title: current.parentSummary,
-                                type: current.parentType,
-                                qty: current.childQty
-                             }, 
-                             children: [],
-                        })
-                    }
-
-                    squad.issues.forEach(issue => {
-                        if (!squad.issues.some(issue => issue["children"].key === current.childKey)) {
-                            issue.children.push({
-                                data: {
-                                    key: current.childKey,
-                                    title: current.childSummary,
-                                    type: current.childType
-                                 }
-                            })
-                        }
-                    })
-
-
-                }
-
-                
-            })
+    let issue = squad?.issues.find(issue => issue.data.key === current.parentKey)
+    if (!issue) {
+        squad?.issues.push({
+            data: {
+              key: current.parentKey,
+              title: current.parentSummary,
+              type: current.parentType,
+              qty: current.childQty,
+            },
+            children: [{
+                data: {
+                  key: current.childKey,
+                  title: current.childSummary,
+                  type: current.childType,
+                },
+              }]
+          })
         }
-    })
+        
+        issue?.children.push({
+          data: {
+            key: current.childKey,
+            title: current.childSummary,
+            type: current.childType,
+          },
+        })
+  
+    // let issue = squad.issues.find(issue => issue.data.key === current.parentKey)
+    // if (!issue) {
+    //     issue = {
+    //       data: {
+    //         key: current.parentKey,
+    //         title: current.parentSummary,
+    //         type: current.parentType,
+    //         qty: current.childQty,
+    //       },
+    //       children: []
+    //     };
+    //     squad.issues.push(issue)
+    // }
+
+    //let children = issue.find(child => )
 
 
+    // acc.forEach((cluster) => {
+    //     if (!cluster.squads.some(squad => squad.title === current.squad)) {
+    //             cluster.squads.push({
+    //                 title: current.squad,
+    //                 isNew: current.isNew,
+    //                 isRun: current.isRun,
+    //                 issues: []
+    //             })
+    //     }
+    // })
+
+    // cluster.squads.forEach(squad => {
+    //     if (!squad.issues.some(issue => issue["data"].key === current.parentKey)) {
+    //             squad.issues.push({
+    //                  data: {
+    //                     key: current.parentKey,
+    //                     title: current.parentSummary,
+    //                     type: current.parentType,
+    //                     qty: current.childQty
+    //                  }, 
+    //                  children: [],
+    //             })
+            
+    //     }             
+    // })
+
+    // squad.issues.forEach(issue => {
+    //     if (!squad.issues.some(issue => issue["children"].key === current.childKey)) {
+    //         issue.children.push({
+    //             data: {
+    //                 key: current.childKey,
+    //                 title: current.childSummary,
+    //                 type: current.childType
+    //              }
+    //         })
+    //     }
+    // })
+    
     
     return acc
 }, [])
