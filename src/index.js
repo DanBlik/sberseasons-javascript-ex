@@ -1,11 +1,14 @@
-import "./styles.css";
-import cube from "./data";
-import result from "./result";
+// import "./styles.css";
+// import cube from "./data";
+// import result from "./result";
 
-import testCheckRes from "./testCheckRes";
+// import testCheckRes from "./testCheckRes";
+const cube = require('./data')
+const result = require('./result')
+const testCheckRes = require('./testCheckRes')
 
-console.log(cube);
-console.log(result);
+//console.log(cube);
+//console.log(result);
 
 const res = cube
   .map((row) => ({
@@ -129,6 +132,7 @@ const res = cube
 
     return acc;
   }, []);
-console.log(res);
+
+//console.dir(res,{depth:null})
 
 testCheckRes(res, result)

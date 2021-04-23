@@ -1,4 +1,5 @@
-export default [
+//export default
+module.exports = [
   {
     title: "Lorem ipsum",
     squads: [

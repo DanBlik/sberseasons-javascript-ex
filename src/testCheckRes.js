@@ -7,4 +7,5 @@ const checkRes = (src, dist) => {
     }
 }
 
-export default checkRes
+//export default checkRes
+module.exports = checkRes
