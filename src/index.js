@@ -1,14 +1,6 @@
-// import "./styles.css";
-// import cube from "./data";
-// import result from "./result";
-
-// import testCheckRes from "./testCheckRes";
 const cube = require('./data')
 const result = require('./result')
 const testCheckRes = require('./testCheckRes')
-
-//console.log(cube);
-//console.log(result);
 
 const res = cube
   .map((row) => ({

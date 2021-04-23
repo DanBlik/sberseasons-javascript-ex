@@ -1,4 +1,3 @@
-
 const assert = require('assert');
 
 const checkRes = (src, dist) => {
@@ -7,5 +6,4 @@ const checkRes = (src, dist) => {
     }
 }
 
-//export default checkRes
 module.exports = checkRes
