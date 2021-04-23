@@ -125,6 +125,8 @@ const res = cube
     return acc;
   }, []);
 
+module.exports = res
+
 //console.dir(res,{depth:null})
 
 testCheckRes(res, result)
