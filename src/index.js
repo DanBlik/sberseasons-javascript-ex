@@ -2,59 +2,51 @@ const cube = require('./data')
 const result = require('./result')
 //const testCheckRes = require('./testCheckRes')
 
-const createChild = current => {
-  return (
-    {
-      data: {
-        key: current.childKey,
-        title: current.childSummary,
-        type: current.childType,
-        qty: 1,
-      },
-    }
-  )
-}
+const createChild = current => (
+  {
+    data: {
+      key: current.childKey,
+      title: current.childSummary,
+      type: current.childType,
+      qty: 1,
+    },
+  }
+)
 
-const createIssue = current => {
-  return (
-    {
-      data: {
-        key: current.parentKey,
-        title: current.parentSummary,
-        type: current.parentType,
-        qty: current.childQty,
-      },
-      children: [
-        createChild(current)
-      ],
-    }
-  )
-}
-
-const createSquad = current => {
-  return (
-    {
-      title: current.squad,
-      isNew: current.isNew,
-      isRun: current.isRun,
-      bound: "15% (mocked)",
-      productOwner: current.productOwner,
-      tagged: false,
-      issues: [
-        createIssue(current)
-      ],
-    }
-  )
-}
-
-const createCluster = current => {
-  return {
-    title: current.cluster,
-    squads: [
-      createSquad(current)
+const createIssue = current => (
+  {
+    data: {
+      key: current.parentKey,
+      title: current.parentSummary,
+      type: current.parentType,
+      qty: current.childQty,
+    },
+    children: [
+      createChild(current)
     ],
   }
-}
+)
+
+const createSquad = current => (
+  {
+    title: current.squad,
+    isNew: current.isNew,
+    isRun: current.isRun,
+    bound: "15% (mocked)",
+    productOwner: current.productOwner,
+    tagged: false,
+    issues: [
+      createIssue(current)
+    ],
+  }
+)
+
+const createCluster = current => ({
+  title: current.cluster,
+  squads: [
+    createSquad(current)
+  ],
+})
 
 const res = cube
   .map((row) => ({
