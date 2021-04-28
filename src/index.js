@@ -1,6 +1,5 @@
 const cube = require('./data')
 const result = require('./result')
-//const testCheckRes = require('./testCheckRes')
 
 const createChild = current => (
   {
@@ -90,6 +89,4 @@ const res = cube
 
 module.exports = res
 
-console.dir(res,{depth:null})
-
-//testCheckRes(res, result)
+console.dir(res, { depth: null })
