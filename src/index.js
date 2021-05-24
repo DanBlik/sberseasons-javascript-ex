@@ -1,11 +1,51 @@
-import "./styles.css";
-import cube from "./data";
-import result from "./result";
+const cube = require('./data')
+const result = require('./result')
 
-import testCheckRes from "./testCheckRes";
+const createChild = current => (
+  {
+    data: {
+      key: current.childKey,
+      title: current.childSummary,
+      type: current.childType,
+      qty: 1,
+    },
+  }
+)
 
-console.log(cube);
-console.log(result);
+const createIssue = current => (
+  {
+    data: {
+      key: current.parentKey,
+      title: current.parentSummary,
+      type: current.parentType,
+      qty: current.childQty,
+    },
+    children: [
+      createChild(current)
+    ],
+  }
+)
+
+const createSquad = current => (
+  {
+    title: current.squad,
+    isNew: current.isNew,
+    isRun: current.isRun,
+    bound: "15% (mocked)",
+    productOwner: current.productOwner,
+    tagged: false,
+    issues: [
+      createIssue(current)
+    ],
+  }
+)
+
+const createCluster = current => ({
+  title: current.cluster,
+  squads: [
+    createSquad(current)
+  ],
+})
 
 const res = cube
   .map((row) => ({
@@ -25,110 +65,28 @@ const res = cube
   .reduce((acc, current) => {
     const cluster = acc.find((cluster) => cluster.title === current.cluster);
     if (!cluster) {
-      acc.push({
-        title: current.cluster,
-        squads: [
-          {
-            title: current.squad,
-            isNew: current.isNew,
-            isRun: current.isRun,
-            bound: "15% (mocked)",
-            productOwner: current.productOwner,
-            tagged: false,
-            issues: [
-              {
-                data: {
-                  key: current.parentKey,
-                  title: current.parentSummary,
-                  type: current.parentType,
-                  qty: current.childQty,
-                },
-                children: [
-                  {
-                    data: {
-                      key: current.childKey,
-                      title: current.childSummary,
-                      type: current.childType,
-                      qty: 1,
-                    },
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      });
+      acc.push(createCluster(current));
     }
 
     const squad = cluster?.squads.find(
       (squad) => squad.title === current.squad
     );
     if (!squad) {
-      cluster?.squads.push({
-        title: current.squad,
-        isNew: current.isNew,
-        isRun: current.isRun,
-        bound: "15% (mocked)",
-        productOwner: current.productOwner,
-        tagged: false,
-        issues: [
-          {
-            data: {
-              key: current.parentKey,
-              title: current.parentSummary,
-              type: current.parentType,
-              qty: current.childQty,
-            },
-            children: [
-              {
-                data: {
-                  key: current.childKey,
-                  title: current.childSummary,
-                  type: current.childType,
-                  qty: 1,
-                },
-              },
-            ],
-          },
-        ],
-      });
+      cluster?.squads.push(createSquad(current));
     }
 
     const issue = squad?.issues.find(
       (issue) => issue.data.key === current.parentKey
     );
     if (!issue) {
-      squad?.issues.push({
-        data: {
-          key: current.parentKey,
-          title: current.parentSummary,
-          type: current.parentType,
-          qty: current.childQty,
-        },
-        children: [
-          {
-            data: {
-              key: current.childKey,
-              title: current.childSummary,
-              type: current.childType,
-              qty: 1,
-            },
-          },
-        ],
-      });
+      squad?.issues.push(createIssue(current));
     }
 
-    issue?.children.push({
-      data: {
-        key: current.childKey,
-        title: current.childSummary,
-        type: current.childType,
-        qty: 1,
-      },
-    });
+    issue?.children.push(createChild(current));
 
     return acc;
   }, []);
-console.log(res);
 
-testCheckRes(res, result)
+module.exports = res
+
+console.dir(res, { depth: null })
