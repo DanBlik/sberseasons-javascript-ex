@@ -37,41 +37,42 @@ const convertDataWithReduce = (cube) => {
                   isNew: squadsCurrent.isNew,
                   isRun: squadsCurrent.isRun,
                   productOwner: squadsCurrent.productOwner,
-                  bound: '15% (moked)',
+                  bound: '15% (mocked)',
                   tagged: false,
                   issues: filtertedByCluster
                     .filter((node) => node.squad === squadsCurrent.squad)
                     .reduce(
                       (issuesAcc, currentIssues, _, filteredBySquads) => {
                         if (
-                          !issuesAcc.data.some(
+                          !issuesAcc.some(
                             (issue) =>
-                              issue?.key === currentIssues.parentKey
+                              issue.data?.key === currentIssues.parentKey
                           )
                         ) {
-                          issuesAcc.data.push({
-                            key: currentIssues.parentKey,
-                            qty: currentIssues.childQty,
-                            title: currentIssues.parentSummary,
-                            type: currentIssues.parentType,
-                          })
-
-                          filteredBySquads
-                          .filter(node => node.parentKey === currentIssues.parentKey)
-                          .map(el => {
-                            issuesAcc.children.push({
-                                data: {
-                                  key: el.childKey,
-                                  title: el.childSummary,
-                                  type: el.childType,
-                                  qty: 1,
-                                },
+                          issuesAcc.push({
+                              data: {
+                                key: currentIssues.parentKey,
+                                qty: currentIssues.childQty,
+                                title: currentIssues.parentSummary,
+                                type: currentIssues.parentType,
+                              },
+                              children: filteredBySquads
+                              .filter(node => node.parentKey === currentIssues.parentKey)
+                              .map(el => {
+                                return {
+                                    data: {
+                                      key: el.childKey,
+                                      title: el.childSummary,
+                                      type: el.childType,
+                                      qty: 1,
+                                    },
+                                }
                               })
                           })
                         }
                         return issuesAcc
                       },
-                      { data: [], children: [] }
+                      []
                     ),
                 })
               }
@@ -85,6 +86,6 @@ const convertDataWithReduce = (cube) => {
 }
 
 //console.dir(convertDataWithReduce(cube))
-//console.dir(convertDataWithReduce(cube), { depth: null })
+console.dir(convertDataWithReduce(cube), { depth: null })
 
 module.exports = convertDataWithReduce
