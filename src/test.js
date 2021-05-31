@@ -1,6 +1,6 @@
 const idealData = require('./result')
 const cube = require('./data')
-const myData = require('./convertDataWithReduce')
+const myData = require('./entries/convertDataWithReduce')
 const assert = require('chai').assert
 
 describe('Equals data' , () => {

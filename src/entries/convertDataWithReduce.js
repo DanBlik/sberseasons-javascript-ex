@@ -1,4 +1,4 @@
-const cube = require('./data')
+//const cube = require('./data')
 
 const convertDataWithReduce = (cube) => {
   return cube
@@ -86,6 +86,6 @@ const convertDataWithReduce = (cube) => {
 }
 
 //console.dir(convertDataWithReduce(cube))
-console.dir(convertDataWithReduce(cube), { depth: null })
+//console.dir(convertDataWithReduce(cube), { depth: null })
 
 module.exports = convertDataWithReduce
